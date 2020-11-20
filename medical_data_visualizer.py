@@ -1,6 +1,6 @@
 import pandas as pd
 import seaborn as sns
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 
 # Import data
@@ -18,15 +18,15 @@ df['gluc'] = np.multiply(df['gluc'] > 1, 1)
 def draw_cat_plot():
     # Create DataFrame for cat plot using `pd.melt` using just the values from 'cholesterol', 'gluc', 'smoke', 'alco', 'active', and 'overweight'.
     df_cat = pd.melt(df, id_vars = ['cardio'], value_vars = ['active', 'alco', 'cholesterol', 'gluc','overweight', 'smoke'])
-    print(df_cat.head())
-    
+     
 
     # Group and reformat the data to split it by 'cardio'. Show the counts of each feature. You will have to rename one of the collumns for the catplot to work correctly.
     #df_cat = df_cat['variable'].value_counts()
-   # print(df_cat.head())
+    #print(df_cat.head())
 
     # Draw the catplot with 'sns.catplot()'
     fig = sns.catplot(x = 'variable', hue = 'value', data = df_cat, height = 5, kind = "count", col = "cardio" )
+    #fig.set(ylabel = "total")
 
 
 
@@ -38,10 +38,10 @@ def draw_cat_plot():
 # Draw Heat Map
 def draw_heat_map():
     # Clean the data
-    df_heat = None
+    df_heat = df.loc[(df['ap_lo'] <= df['ap_hi']) & (df['height'] >= df['height'].quantile(0.025)) & (df['height'] <= df['height'].quantile(0.975)) & (df['weight'] >= df['weight'].quantile(0.025)) & (df['height'] <= df['height'].quantile(0.975))]
 
     # Calculate the correlation matrix
-    corr = None
+    corr = df_heat.corr()
 
     # Generate a mask for the upper triangle
     mask = None
@@ -52,10 +52,8 @@ def draw_heat_map():
     fig, ax = None
 
     # Draw the heatmap with 'sns.heatmap()'
-    return 0
-
-
+    
 
     # Do not modify the next two lines
-  #  fig.savefig('heatmap.png')
-  #  return fig
+    fig.savefig('heatmap.png')
+    return fig
