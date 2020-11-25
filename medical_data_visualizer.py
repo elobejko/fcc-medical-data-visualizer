@@ -28,8 +28,6 @@ def draw_cat_plot():
     fig = sns.catplot(x = 'variable', hue = 'value', data = df_cat, height = 5, kind = "count", col = "cardio" )
     fig.set_axis_labels('variable', 'total')
 
-
-
     # Do not modify the next two lines
     fig.savefig('catplot.png')
     return fig
@@ -44,14 +42,15 @@ def draw_heat_map():
     corr = df_heat.corr()
 
     # Generate a mask for the upper triangle
-    mask = None
-
+    mask = np.triu(np.ones_like(corr, dtype=bool))
 
 
     # Set up the matplotlib figure
-    fig, ax = None
+    fig, ax = plt.subplots(figsize=(11, 9))
 
     # Draw the heatmap with 'sns.heatmap()'
+    sns.heatmap(corr, mask=mask, center=0,  annot=True, fmt = '.1f',
+            square=True, linewidths=.5, cbar_kws={"shrink": .5})
     
 
     # Do not modify the next two lines
